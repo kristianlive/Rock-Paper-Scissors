@@ -5,7 +5,7 @@ package org.example;
 public class Main {
     public static void main(String[] args) {
         System.out.printf("Hello and welcome to git remote add origin https://github.com/kristianlive/rock-paper-scissors.git!");
-        System.out.println("test SOUT+++");
+        System.out.println("test SOUT++");
 
         for (int i = 1; i <= 5; i++) {
             System.out.println("i = " + i);

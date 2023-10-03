@@ -22,7 +22,7 @@ Game {
         System.out.println("1. Create new player");
         System.out.println("2. Start a new game");
         System.out.println("3. Exit");
-        System.out.print("Enter your number choice: ");
+        System.out.print("Enter your choice: ");
     }
 
     private void getUserChoice() {
@@ -34,11 +34,11 @@ Game {
                 System.out.print("Enter player name: ");
                 String name = scanner.nextLine();
                 player = new Player(name);
-                System.out.println("[" + name + "]" + " Player Created");
+                System.out.println("[" + name + "]" + " Player created.");
                 break;
             case 2:
                 if (player == null) {
-                    System.out.println("Please create player first!");
+                    System.out.println("IMPORTANT!!!"+"\nPlease create a player first!");
                 } else {
                     playRound();
                 }
@@ -52,23 +52,45 @@ Game {
     }
 
     private void playRound() {
-        while (player.getScore() < 3 && computerPlayer.getComputerScore() < 3) {
-            System.out.print("Enter your move (rock, paper, scissors): ");
-            String playerMove = scanner.nextLine();
+        GameSettings settings = GameSettings.getInstance();
+        System.out.println("Enter the number of rounds needed to win. Default is " + settings.getRoundsToWin());
+        String input = scanner.nextLine();
+
+        int choice;
+        if (input.isEmpty()) {
+            choice = settings.getRoundsToWin();
+        } else {
+            choice = Integer.parseInt(input);
+        }
+
+        while (player.getScore() < choice && computerPlayer.getComputerScore() < choice) {
+            String playerMove;
+            do {
+                System.out.println("-------------------------------------------------------------");
+                System.out.print("[" + player.getName() + "]" + "\nEnter your move (rock, paper, scissors): ");
+                playerMove = scanner.nextLine();
+                if (!playerMove.equals("rock") && !playerMove.equals("paper") && !playerMove.equals("scissors")) {
+                    System.out.println("Invalid move. Please enter 'rock', 'paper', or 'scissors'.");
+                }
+            } while (!playerMove.equals("rock") && !playerMove.equals("paper") && !playerMove.equals("scissors"));
+
             String computerMove = computerPlayer.generateMove();
             System.out.println("Computer chose: " + computerMove);
             decideWinner(playerMove, computerMove);
 
-            if (player.getScore() >= 3) {
-                System.out.println("Player has won the game 3 times!");
+            if (player.getScore() >= choice) {
+                System.out.println("Player has won the game " + choice + " times!");
                 gameRunning = false;
-                break; 
-            } else if (computerPlayer.getComputerScore() >= 3) {
-                System.out.println("Computer has won the game 3 times!");
+                break;
+            } else if (computerPlayer.getComputerScore() >= choice) {
+                System.out.println("Computer has won the game " + choice + " times!");
+                System.out.println("Final Score: " + player.getScore() + "-" + computerPlayer.getComputerScore());
                 gameRunning = false;
             }
+
         }
     }
+
 
     private void decideWinner(String playerMove, String computerMove) {
         if (playerMove.equals(computerMove)) {

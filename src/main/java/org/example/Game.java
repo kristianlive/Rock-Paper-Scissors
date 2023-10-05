@@ -26,6 +26,13 @@ Game {
     }
 
     private void getUserChoice() {
+
+        System.out.print("Enter your choice: ");
+        while (!scanner.hasNextInt()) {
+            System.out.println("Invalid input. Please enter a number.");
+            scanner.nextLine(); // Hanterar strängar som input
+        }
+
         int choice = scanner.nextInt();
         scanner.nextLine();
 
@@ -53,17 +60,20 @@ Game {
 
     private void playRound() {
         GameSettings settings = GameSettings.getInstance();
+
         System.out.println("Enter the number of rounds needed to win. Default is " + settings.getRoundsToWin());
         String input = scanner.nextLine();
 
-        int choice;
+        int roundsToWin;
         if (input.isEmpty()) {
-            choice = settings.getRoundsToWin();
+            roundsToWin = settings.getRoundsToWin();
         } else {
-            choice = Integer.parseInt(input);
+            roundsToWin = Integer.parseInt(input);
         }
 
-        while (player.getScore() < choice && computerPlayer.getComputerScore() < choice) {
+        settings.setRoundsToWin(roundsToWin); // kan återanvändas vid behov utanför metoden
+
+        while (player.getScore() < roundsToWin && computerPlayer.getComputerScore() < roundsToWin) {
             String playerMove;
             do {
                 System.out.println("-------------------------------------------------------------");
@@ -78,12 +88,12 @@ Game {
             System.out.println("Computer chose: " + computerMove);
             decideWinner(playerMove, computerMove);
 
-            if (player.getScore() >= choice) {
-                System.out.println("Player has won the game " + choice + " times!");
+            if (player.getScore() >= roundsToWin) {
+                System.out.println("Player has won the game " + roundsToWin + " times!");
                 gameRunning = false;
                 break;
-            } else if (computerPlayer.getComputerScore() >= choice) {
-                System.out.println("Computer has won the game " + choice + " times!");
+            } else if (computerPlayer.getComputerScore() >= roundsToWin) {
+                System.out.println("Computer has won the game " + roundsToWin + " times!");
                 System.out.println("Final Score: " + player.getScore() + "-" + computerPlayer.getComputerScore());
                 gameRunning = false;
             }

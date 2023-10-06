@@ -1,6 +1,8 @@
 package org.example;
 
 public class GameSettings {
+
+    //singleton design pattern
     private static GameSettings instance = null; // private static därför ingen access
     private int roundsToWin;
 

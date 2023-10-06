@@ -28,6 +28,7 @@ Game {
     private void getUserChoice() {
 
         System.out.print("Enter your choice: ");
+
         while (!scanner.hasNextInt()) {
             System.out.println("Invalid input. Please enter a number.");
             scanner.nextLine(); // Hanterar strängar som input
@@ -59,7 +60,7 @@ Game {
     }
 
     private void playRound() {
-        GameSettings settings = GameSettings.getInstance();
+        GameSettings settings = GameSettings.getInstance(); //singleton design pattern
 
         System.out.println("Enter the number of rounds needed to win. Default is " + settings.getRoundsToWin());
         String input = scanner.nextLine();
